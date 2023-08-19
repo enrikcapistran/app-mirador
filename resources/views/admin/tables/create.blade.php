@@ -10,7 +10,7 @@
             <div class="flex m-2 p-2">
                 <a href="{{ route('admin.tables.index') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 rounded-lg
                 text-white">
-                    Table Index
+                    Ver Mesas
                 </a>
             </div>
             <div class="m-2 p-2 bg-slate-100 rounded">
@@ -72,7 +72,7 @@
                         <div class="mt-6 p-4">
                             <button type="submit" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 rounded-lg
                             text-white">
-                            Store
+                            Guardar
                         </button>
                         </div>
                     </form>
