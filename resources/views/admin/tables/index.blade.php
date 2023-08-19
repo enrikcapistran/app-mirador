@@ -11,7 +11,7 @@
         <div class="flex justify-end m-2 p-2">
                 <a href="{{ route('admin.tables.create') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 rounded-lg
                 text-white">
-                    New Table
+                    Nueva Mesa
                 </a>
         </div>
 
