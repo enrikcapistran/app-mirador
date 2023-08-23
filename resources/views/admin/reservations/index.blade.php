@@ -59,7 +59,19 @@
                                 {{ $reservation->guest_number }}
                             </td>
                             <td scope="'col" class="relative py-3 px-6">
-                                <span class="sr-only">Editar</span>
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
+                                    class="px-4 py-2 bg-green-500 hover:bg-green-700 rounded-lg text-white">
+                                        Editar
+                                    </a>
+                                    <form class="px-4 py-2 bg-red-500 hover:bg-red-700 rounded-lg text-white"
+                                    method="POST" action="{{ route('admin.reservations.destroy', $reservation->id) }}"
+                                    onsubmit="return confirm('¿Desea eliminar este menú?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit">Eliminar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

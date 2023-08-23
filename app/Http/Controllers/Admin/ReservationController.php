@@ -82,9 +82,11 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Reservation $reservation)
     {
         //
+        $tables = Table::where('status', TableStatus::Disponible)->get();
+        return view ('admin.reservations.edit', compact('reservation', 'tables'));
     }
 
     /**
@@ -94,9 +96,29 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ReservationStoreRequest $request, Reservation $reservation)
     {
         //
+        $table = Table::findOrFail($request->table_id);
+        if($request->guest_number > $table->guest_number){
+            return back()->with('warning', 'Seleccione una mesa con más lugares.');
+        }
+
+        $request_date = Carbon::parse($request->res_date);
+        
+        $reservations = $table->reservations()->where('id', '!=', $reservation->id)->get();
+
+        // Verificar que no coincida el mismo día en caso de la mesa estar reservada.
+        foreach($reservations as $reservation){
+            if($reservation->res_date->format('Y-m-d') == $request_date->format('Y-m-d')){
+                return back()->with('warning', 'La mesa está ocupada en la fecha especificada.');
+            }
+        }
+
+        $reservation->update($request->validated());
+
+        return to_route('admin.reservations.index')->with('success', 'Reservación Actualizada Correctamente.');
+
     }
 
     /**
@@ -105,8 +127,11 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Reservation $reservation)
     {
         //
+        $reservation->delete();
+        return to_route('admin.reservations.index')->with('danger', 'Reservación Eliminada.');
+
     }
 }
